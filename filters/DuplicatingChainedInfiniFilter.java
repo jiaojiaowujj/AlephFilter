@@ -60,12 +60,19 @@ public class DuplicatingChainedInfiniFilter extends ChainedInfiniFilter implemen
 	
 	public static int derive_init_fingerprint_size(int expected_fp_bits, int expected_expansions) { //该方法根据给定的预期假阳性率（expected_fp_bits）和预期扩展次数（expected_expansions），计算一个新的指纹大小（即新的 fingerprint size）
 		//int new_fingerprint_size = FingerprintGrowthStrategy.get_new_fingerprint_size(expected_fp_bits, 0, expected_expansions, FalsePositiveRateExpansion.POLYNOMIAL_SHRINK);
-		double original_FPR = Math.pow(2, -expected_fp_bits); // expected_fp_bits表示期望的假阳性率的位数
+		double original_FPR = Math.pow(2, -expected_fp_bits); 
+		// expected_fp_bits表示期望的假阳性率的位数；假阳性率与指纹的位数相关，指纹位数越大，假阳性率越低，该公式计算 original_FPR 原始假阳性率
 		double current = expected_expansions + 1;
 		double factor = 1.0 / Math.pow(current, 2);
+		// 计算衰减因子 factor
+		// expected_expansions 是预期的扩展次数（一般来说，扩展越多，指纹大小越大)
+		// factor 通过扩展次数 current 的平方倒数计算，表示扩展对假阳性率的影响。随着扩展次数的增加，factor 会变得更小，从而导致新的假阳性率下降
 		double new_filter_FPR = factor * original_FPR; 
+		// 新的假阳性率（new_filter_FPR）是通过原始假阳性率与衰减因子相乘得到的。扩展次数越多，新的假阳性率就会越低。
 		double fingerprint_size = Math.ceil( Math.log(1.0/new_filter_FPR) / Math.log(2) );
+		// 计算新的指纹大小，首先通过 Math.log(1.0 / new_filter_FPR) 计算新的假阳性率的对数，然后除以 Math.log(2) 转换为以 2 为底的对数，最后使用 Math.ceil 向上取整，以确保指纹大小为整数
 		int fingerprint_size_int = (int) fingerprint_size;
+		// 将结果转换为整数并返回新的指纹大小
 		return fingerprint_size_int;
 	}
 	
@@ -78,6 +85,9 @@ public class DuplicatingChainedInfiniFilter extends ChainedInfiniFilter implemen
 		resolve_pending_operations();
 		lazy_new_deletes = val;
 	}
+
+	// 设置某些成员变量，并在设置之前调用 resolve_pending_operations() 方法
+	// resolve_pending_operations() 目的是在修改成员变量之前，确保解决所有待处理的操作。具体实现没有给出，但通常来说，这种方法可能会处理一些尚未完成的事务，确保在修改状态时不会出现不一致的情况。
 	
 	public DuplicatingChainedInfiniFilter(int power_of_two, int bits_per_entry, boolean _lazy_updates, int new_num_expansions_estimate) {
 		super(power_of_two, bits_per_entry);
