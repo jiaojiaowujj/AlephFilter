@@ -23,6 +23,7 @@ import bitmap_implementations.Bitmap;
 import java.util.TreeMap;
 
 public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
+	//BasicInfiniFilter 的父类是QuotientFilter
 
 	protected long empty_fingerprint;
 	int num_void_entries = 0;
