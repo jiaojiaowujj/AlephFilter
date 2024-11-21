@@ -92,18 +92,20 @@ public class DuplicatingChainedInfiniFilter extends ChainedInfiniFilter implemen
 	public DuplicatingChainedInfiniFilter(int power_of_two, int bits_per_entry, boolean _lazy_updates, int new_num_expansions_estimate) {
 		super(power_of_two, bits_per_entry);
 		set_deleted_void_fingerprint();
-		deleted_void_entries = new ArrayList<>(100000);
-		rejuvenated_void_entries = new ArrayList<>();
-		deleted_new_entries = new ArrayList<>(100000);
-		lazy_void_deletes = _lazy_updates;
-		lazy_new_deletes = false;
-		num_expansions_estimate = new_num_expansions_estimate;
+		// 设置 deleted_void_fingerprint 的值
+		deleted_void_entries = new ArrayList<>(100000); // 初始化为一个大小为 100000 的 ArrayList
+		rejuvenated_void_entries = new ArrayList<>(); // 初始化为空的 ArrayList，这可能是用来存储恢复或重新激活的条目
+		deleted_new_entries = new ArrayList<>(100000); // 初始化为一个大小为 100000 的 ArrayList
+		
+		lazy_void_deletes = _lazy_updates; // 通过传入的参数 _lazy_updates 设置 lazy_void_deletes。lazy_void_deletes 可能用于控制是否使用懒删除（即不立即删除条目，而是标记为删除）
+		lazy_new_deletes = false;  // 新删除条目的删除操作可能不使用懒删除策略
+		num_expansions_estimate = new_num_expansions_estimate; // 预期的扩展次数
 		//System.out.println(filter.size());
 		if (num_expansions_estimate > -1) {
-			fprStyle = FalsePositiveRateExpansion.POLYNOMIAL_SHRINK;
-			fingerprintLength = FingerprintGrowthStrategy.get_new_fingerprint_size(fingerprintLength, 0, new_num_expansions_estimate, fprStyle);
-			bitPerEntry = fingerprintLength + 3; 
-			filter = make_filter(1L << power_of_two, bitPerEntry);
+			fprStyle = FalsePositiveRateExpansion.POLYNOMIAL_SHRINK; //假阳性率扩展策略使用的是多项式收缩策略
+			fingerprintLength = FingerprintGrowthStrategy.get_new_fingerprint_size(fingerprintLength, 0, new_num_expansions_estimate, fprStyle); // 计算新的指纹大小，根据扩展次数更新指纹长度
+			bitPerEntry = fingerprintLength + 3; //将 fingerprintLength 增加 3 来计算
+			filter = make_filter(1L << power_of_two, bitPerEntry); // 用于创建一个新的过滤器，大小为 1L << power_of_two，并使用更新的 bitPerEntry
 			empty_fingerprint = (1L << fingerprintLength) - 2 ;
 			//original_fingerprint_size = fingerprintLength;
 			//int f = original_fingerprint_size;
@@ -117,6 +119,11 @@ public class DuplicatingChainedInfiniFilter extends ChainedInfiniFilter implemen
 		//print_long_in_binary(deleted_void_fingerprint, 32);
 		//System.out.println();
 	}
+	// 设置 deleted_void_fingerprint 的值
+	// (1 << fingerprintLength) 是将 1 左移 fingerprintLength 位，产生一个值，其中只有 fingerprintLength 位为 1，其他位为 0
+	// 例如，如果 fingerprintLength 是 4，则 (1 << 4) 结果为 10000（二进制，长度为 5 位），即 16。
+	// - 1 使得所有的低位都变为 1。例如，10000 - 1 等于 01111（二进制，长度为 4 位），即 15。因此，deleted_void_fingerprint 将被设置为一个二进制数，所有的低位都为 1，而高位为 0，长度为 fingerprintLength 位。
+
 	
 	void handle_empty_fingerprint(long bucket_index, QuotientFilter insertee) {
 		//pretty_print();
