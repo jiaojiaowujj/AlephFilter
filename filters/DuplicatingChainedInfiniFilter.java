@@ -21,7 +21,9 @@ import java.util.ArrayList;
 import filters.FingerprintGrowthStrategy.FalsePositiveRateExpansion;
 
 public class DuplicatingChainedInfiniFilter extends ChainedInfiniFilter implements Cloneable {
-
+	//ChainedInfiniFilter 是 DuplicatingChainedInfiniFilter 的父类, DuplicatingChainedInfiniFilter 继承了 ChainedInfiniFilter 类的所有属性和方法（除非被覆盖），可以使用父类定义的功能，或者在此基础上进行扩展和修改
+	//Cloneable 是一个标记接口（marker interface），用于标记一个类支持克隆操作。实现这个接口表明类的对象可以通过调用 clone() 方法创建一个副本
+	
 	boolean lazy_void_deletes;
 	boolean lazy_new_deletes;
 	long deleted_void_fingerprint = 0;
@@ -30,7 +32,7 @@ public class DuplicatingChainedInfiniFilter extends ChainedInfiniFilter implemen
 	ArrayList<Long> deleted_new_entries;
 	
 	@Override
-	public Object clone() {
+	public Object clone() { //clone() 方法，用于实现对象的深拷贝
 		DuplicatingChainedInfiniFilter f = (DuplicatingChainedInfiniFilter) super.clone();
 		f.deleted_void_entries = (ArrayList<Long>) deleted_void_entries.clone();
 		f.rejuvenated_void_entries = (ArrayList<Long>) rejuvenated_void_entries.clone();
@@ -38,15 +40,27 @@ public class DuplicatingChainedInfiniFilter extends ChainedInfiniFilter implemen
 		return f;
 	}
 	
+	/*
+	1. super.clone()
+		-调用父类的 clone() 方法:
+		-super.clone() 调用了父类 ChainedInfiniFilter 的 clone() 方法。这将创建一个当前对象的浅拷贝（即对象本身的结构被复制，但对象内部的引用类型字段（如 ArrayList）仍然指向原始对象中的相同实例）。
+		-这样可以保留父类中的所有属性和状态。
+  	2. 深拷贝 ArrayList
+   		-deleted_void_entries、rejuvenated_void_entries 和 deleted_new_entries 都是 ArrayList<Long> 类型的成员变量。
+     		-调用 .clone() 方法会创建这些列表的副本，但仅进行浅拷贝（即它们的新列表对象会被复制，但其中的元素仍然是原始对象的元素，除非这些元素本身是不可变的）。
+       		-通过 (ArrayList<Long>) ... 强制类型转换，确保返回的副本仍然是 ArrayList<Long> 类型。
+	 	-深拷贝：虽然 .clone() 方法会复制列表的结构，但列表中的元素仍然是引用类型。如果 Long 是不可变类型，则无需进一步处理；如果这些列表中存储的是其他可变对象，你可能需要手动拷贝这些对象，以确保真正的深拷贝。
+	*/
+	
 	enum delayed_op_type {
 		old_delete,
 		new_delete,
 		old_rejuv
 	}
 	
-	public static int derive_init_fingerprint_size(int expected_fp_bits, int expected_expansions) {
+	public static int derive_init_fingerprint_size(int expected_fp_bits, int expected_expansions) { //该方法根据给定的预期假阳性率（expected_fp_bits）和预期扩展次数（expected_expansions），计算一个新的指纹大小（即新的 fingerprint size）
 		//int new_fingerprint_size = FingerprintGrowthStrategy.get_new_fingerprint_size(expected_fp_bits, 0, expected_expansions, FalsePositiveRateExpansion.POLYNOMIAL_SHRINK);
-		double original_FPR = Math.pow(2, -expected_fp_bits);
+		double original_FPR = Math.pow(2, -expected_fp_bits); // expected_fp_bits表示期望的假阳性率的位数
 		double current = expected_expansions + 1;
 		double factor = 1.0 / Math.pow(current, 2);
 		double new_filter_FPR = factor * original_FPR; 
