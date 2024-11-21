@@ -61,26 +61,30 @@ public class QuotientFilter extends Filter implements Cloneable {
 	}
 	
 	public QuotientFilter(int power_of_two, int bits_per_entry) {
-		power_of_two_size = power_of_two;
-		bitPerEntry = bits_per_entry; 
-		fingerprintLength = bits_per_entry - 3;
-		long init_size = 1L << power_of_two;
+		//输入两个参数 
+		//power_of_two: 决定过滤器的基本大小，定义为2^power_of_two
+		//bits_per_entry: 每个条目分配的位数
 		
-		num_extension_slots = power_of_two * 2;
+		power_of_two_size = power_of_two; //存储过滤器大小的指数部分
+		bitPerEntry = bits_per_entry; //每个条目分配的位数
+		fingerprintLength = bits_per_entry - 3; //指纹长度
+		long init_size = 1L << power_of_two; //使用左移运算符计算过滤器的初始大小  2^power_of_two
 		
-		filter = make_filter(init_size, bits_per_entry);
+		num_extension_slots = power_of_two * 2; //扩展槽的数量
 		
-		fullness_threshold = 0.8;
-		max_entries_before_full = (int) (init_size * fullness_threshold);
-		expand_autonomously = true;
-		is_full = false;
+		filter = make_filter(init_size, bits_per_entry); // 调用 make_filter 方法创建过滤器
 		
-		original_fingerprint_size = fingerprintLength;
-		num_expansions = 0;
-		hash_type = HashType.xxh;
+		fullness_threshold = 0.8; // 设置为 80%，表示过滤器在存储容量达到 80% 时被认为“满载”
+		max_entries_before_full = (int) (init_size * fullness_threshold); //计算过滤器在满载前能存储的最大条目数
+		expand_autonomously = true; //是否支持自动扩展
+		is_full = false; //初始设置为 false，表示过滤器尚未满载
 		
-		last_empty_slot = init_size + num_extension_slots - 1;
-		last_cluster_start = 0;
+		original_fingerprint_size = fingerprintLength; //保存原始指纹大小
+		num_expansions = 0; //扩展次数，初始为 0
+		hash_type = HashType.xxh; //设置哈希类型为 HashType.xxh
+		
+		last_empty_slot = init_size + num_extension_slots - 1; //计算最后一个空槽的位置，考虑初始大小和扩展槽
+		last_cluster_start = 0; //初始设置为 0，可能用于标记cluster的起点
 		backward_steps = 0;
 		//measure_num_bits_per_entry();
 	}
