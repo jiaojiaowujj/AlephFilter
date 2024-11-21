@@ -36,9 +36,9 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 	}
 	
 	BasicInfiniFilter(int power_of_two, int bits_per_entry) {
-		super(power_of_two, bits_per_entry);
-		max_entries_before_full = (long)(Math.pow(2, power_of_two_size) * fullness_threshold);
-		set_empty_fingerprint(fingerprintLength);
+		super(power_of_two, bits_per_entry); // 调用了父类的构造函数 QuotientFilter，传递了两个参数 power_of_two 和 bits_per_entry; super是java的一个关键词，用于引用当前类的直接父类的成员（包括方法和构造函数）
+		max_entries_before_full = (long)(Math.pow(2, power_of_two_size) * fullness_threshold); //计算过滤器的理论最大容量
+		set_empty_fingerprint(fingerprintLength); //初始化过滤器中表示“空槽位”的指纹值?
 	}
 	
 	@Override
