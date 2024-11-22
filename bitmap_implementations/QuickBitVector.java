@@ -155,10 +155,12 @@ public static long[] makeBitVector(long size, int bitsPerElement) {
 }
 	/*
 	1. long nBits = size * bitsPerElement;
-	这行代码计算总比特数 nBits，它等于 size 和 bitsPerElement 的乘积。size 是向量中元素的数量，bitsPerElement 是每个元素占用的比特数。例如，如果 size 是 1000，bitsPerElement 是 8，则 nBits 为 8000，表示需要 8000 个比特。
+	这行代码计算总比特数 nBits，它等于 size 和 bitsPerElement 的乘积。size 是向量中元素的数量，bitsPerElement 是每个元素占用的比特数。
+ 	例如，如果 size 是 1000，bitsPerElement 是 8，则 nBits 为 8000，表示需要 8000 个比特。
 	2. int unitIndex = (int)((nBits - 1) >> ADDRESS_BITS_PER_UNIT);
 	这里的 nBits - 1 是为了确保如果 nBits 正好是某个 long 数组的倍数时，索引会向上舍入。
-	ADDRESS_BITS_PER_UNIT 是一个常量，表示每个 long 单元（long 类型通常为 64 位）的位数。因此， (nBits - 1) >> ADDRESS_BITS_PER_UNIT 计算的是需要多少个 long 数组单元来存储这些比特。
+	ADDRESS_BITS_PER_UNIT 是一个常量，表示每个 long 单元（long 类型通常为 64 位）的位数。
+ 	因此， (nBits - 1) >> ADDRESS_BITS_PER_UNIT 计算的是需要多少个 long 数组单元来存储这些比特。
 	例如，如果 nBits 是 8000，而每个 long 单元有 64 位，(8000 - 1) >> 6 等于 124。即需要 125 个 long 单元来存储这些比特。
 	3. long[] bitVector = new long[unitIndex + 1];
 	根据计算的 unitIndex，创建一个新的 long[] 数组 bitVector。unitIndex + 1 是因为数组的索引是从 0 开始的，所以我们需要多一位来容纳所有的比特。
