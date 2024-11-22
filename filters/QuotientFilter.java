@@ -124,6 +124,8 @@ public class QuotientFilter extends Filter implements Cloneable {
 	Bitmap make_filter(long init_size, int bits_per_entry) {
 		return new QuickBitVectorWrapper(bits_per_entry,  init_size + num_extension_slots);
 	}
+	//该方法返回类型 Bitmap，作用是生成一个 Bitmap 类型的对象
+	// QuickBitVectorWrapper 是一个类，它可能是 Bitmap 的具体实现或子类
 	
 	public int get_fingerprint_length() {
 		return fingerprintLength;
