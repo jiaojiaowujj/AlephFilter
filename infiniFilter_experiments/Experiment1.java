@@ -42,7 +42,7 @@ public class Experiment1 extends ExperimentsBase {
 		{
 			QuotientFilter qf = new QuotientFilter(num_entries_power, bits_per_entry);
 			scalability_experiment(qf, 0, qf.get_max_entries_before_expansion() - 1, new baseline()); 
-			//get_max_entries_before_expansion 得到 max_entries_before_full=2^num_entries_power * fullness_threshold
+			//get_max_entries_before_expansion() 是QuotientFilter的方法，用于取到 max_entries_before_full=2^num_entries_power * fullness_threshold
 		}
 		{
 			QuotientFilter qf = new QuotientFilter(num_entries_power, bits_per_entry);
@@ -330,7 +330,7 @@ public class Experiment1 extends ExperimentsBase {
 		//输入四个变量
 		//Filter qf 一个类型为 Filter 的对象
 		//long initial_key 初始插入key (即插入元素)
-		//long end_key
+		//long end_key 可以插入key 的最大数量(由slot数量和门限值约束)
 		//baseline result
 
 		int num_qeuries = 1000000; //查询次数
@@ -353,7 +353,7 @@ public class Experiment1 extends ExperimentsBase {
 			//注意这了不是调用对应filter的insert方法，因为对应filter的insert方法包含三个变量，而是调用父类Filter.insert();
 			// Filter 中的insert方法包含计算insertion_index的hash(包含指纹和slot)和插入filter过程 _insert() ,该方法是抽象方法，因不同的类不同
 			insertion_index++; // 插入的元素key++,也就是说，本实验的插入元素是选定一个开始的key,然后++得到的，直到插满（扩展）
-		} while (insertion_index < end_key && successful_insert);//当插入
+		} while (insertion_index < end_key && successful_insert);//当插入索引小于允许插入的最大数量 且 上述
 		
 		if (!successful_insert) {
 			System.out.println("an insertion failed");
