@@ -326,15 +326,17 @@ public class Experiment1 extends ExperimentsBase {
 	
 	
 	static public void scalability_experiment(Filter qf, long initial_key, long end_key, baseline results) {
+		//输入四个变量
+		//Filter qf
 
-		int num_qeuries = 1000000;
-		int query_index = Integer.MAX_VALUE;
-		int num_false_positives = 0;
+		int num_qeuries = 1000000; //查询次数
+		int query_index = Integer.MAX_VALUE; // int 类型能够表示的最大值。它的值是 2^31 - 1，即 2,147,483,647
+		int num_false_positives = 0; //假阳性数量
 
 		//int num_entries_to_insert = (int) (Math.pow(2, power) * (qf.expansion_threshold )) - qf.num_existing_entries;
 		//final int initial_num_entries = qf.get_num_entries(true);
 		
-		long initial_num_entries = initial_key;
+		long initial_num_entries = initial_key; 初始
 		long insertion_index = initial_key;
 		long start_insertions = System.nanoTime();
 
