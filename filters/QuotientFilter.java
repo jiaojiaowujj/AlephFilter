@@ -756,7 +756,7 @@ public class QuotientFilter extends Filter implements Cloneable {
 		}*/
 		// 如果设置了自动扩展，并且当前条目数大于扩展前的最大值，则执行扩展操作。num_physical_entries？？max_entries_before_full？？
 		if (expand_autonomously && num_physical_entries >= max_entries_before_full) {
-			boolean expanded = expand();
+			boolean expanded = expand();//设置is_full = true，返回false
 			if (expanded) {
 				num_expansions++;
 			}
