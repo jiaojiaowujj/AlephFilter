@@ -41,8 +41,8 @@ public class QuotientFilter extends Filter implements Cloneable {
 	
 	
 	
-	boolean expand_autonomously;
-	boolean is_full;
+	boolean expand_autonomously; //控制自动扩展
+	boolean is_full; //表示 QuotientFilter 是否已满
 	
 	// statistics, computed in the compute_statistics method. method should be called before these are used
 	long num_runs; 
