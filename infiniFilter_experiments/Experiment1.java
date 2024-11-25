@@ -48,7 +48,7 @@ public class Experiment1 extends ExperimentsBase {
 			scalability_experiment(qf, 0, qf.get_max_entries_before_expansion() - 1, new baseline());
 		}
 		
-		System.gc();
+		System.gc(); //java请求垃圾回收的一个方法。调用这个方法会建议 Java 虚拟机（JVM）执行垃圾回收（GC），以回收不再使用的对象所占用的内存
 		
 		baseline bloom_res = new baseline();
 		{
