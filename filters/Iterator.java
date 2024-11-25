@@ -14,6 +14,9 @@ See the License for the specific language governing permissions and
 limitations under the License.
  */
 
+
+//遍历当前QuotientFilter，将旧元素插入到扩展后的新Filter
+
 package filters;
 
 import java.util.ArrayDeque;
@@ -27,16 +30,16 @@ public class Iterator  {
 	long fingerprint;
 	Queue<Long> s;
 
-	Iterator(QuotientFilter new_qf) {
+	Iterator(QuotientFilter new_qf) {//初始化迭代器
 		qf = new_qf;
-		s = new ArrayDeque<Long>(); 
+		s = new ArrayDeque<Long>(); // 初始化队列
 		//s = new ArrayDeque<Integer>();
 		index = 0;
 		bucket_index = -1;
 		fingerprint = -1;
 	}
 	
-	void clear() {
+	void clear() {//清空队列 s 和迭代器的状态，重置为初始状态
 		s.clear();
 		index = 0;
 		bucket_index = -1;
