@@ -201,16 +201,16 @@ public class DuplicatingChainedInfiniFilter extends ChainedInfiniFilter implemen
 	
 	public void resolve_pending_operations() {
 		for (Long canon_addr : deleted_new_entries) {
-			delete_tombstone_of_new_entry(canon_addr);
+			delete_tombstone_of_new_entry(canon_addr); // 删除新条目的墓碑
 		}
-		deleted_new_entries.clear();
+		deleted_new_entries.clear(); // 清空新删除条目的集合
 		
 		if (!deleted_void_entries.isEmpty()) {
-			remove_deleted_void_entry_duplicates(false, deleted_void_entries);
+			remove_deleted_void_entry_duplicates(false, deleted_void_entries); // 移除无效条目集合中的重复项
 		}
 		
 		if (!rejuvenated_void_entries.isEmpty()) {
-			remove_deleted_void_entry_duplicates(true, rejuvenated_void_entries);
+			remove_deleted_void_entry_duplicates(true, rejuvenated_void_entries); // 移除被更新的无效条目集合中的重复项
 		}
 	}
 	
