@@ -66,7 +66,7 @@ public class QuotientFilter extends Filter implements Cloneable {
 		//bits_per_entry: 每个条目分配的位数
 		
 		power_of_two_size = power_of_two; //存储过滤器大小的指数部分
-		bitPerEntry = bits_per_entry; //每个条目分配的位数
+		bitPerEntry = bits_per_entry; //每个条目分配的位数,包含指纹+3个字段比特is_occupied, is_continuation, is_shifted
 		fingerprintLength = bits_per_entry - 3; //指纹长度
 		long init_size = 1L << power_of_two; //使用左移运算符计算过滤器的初始大小  2^power_of_two
 		
