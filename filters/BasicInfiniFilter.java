@@ -225,7 +225,7 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 	}
 	
 	public boolean expand() {
-		if (is_full()) {
+		if (is_full()) {//无效条目的数量大于0时，返回true,否则返回false
 			return false;
 		}
 		int new_fingerprint_size = FingerprintGrowthStrategy.get_new_fingerprint_size(original_fingerprint_size, num_expansions, num_expansions_estimate, fprStyle);
@@ -373,7 +373,7 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 		return true;
 	}
 	
-	boolean is_full() {
+	boolean is_full() {//无效条目的数量大于0时，返回true,否则返回false
 		return num_void_entries > 0;
 	}
 	
