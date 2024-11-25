@@ -36,12 +36,13 @@ import filters.QuotientFilter;
 public class Experiment1 extends ExperimentsBase {
 	
 	public static void main(String[] args) {
-		parse_arguments(args);
+		parse_arguments(args); //解析命令行参数，包括用户输入的所有参数
 		
 		System.gc();
 		{
 			QuotientFilter qf = new QuotientFilter(num_entries_power, bits_per_entry);
-			scalability_experiment(qf, 0, qf.get_max_entries_before_expansion() - 1, new baseline());
+			scalability_experiment(qf, 0, qf.get_max_entries_before_expansion() - 1, new baseline()); 
+			//get_max_entries_before_expansion 得到 max_entries_before_full=2^num_entries_power * fullness_threshold
 		}
 		{
 			QuotientFilter qf = new QuotientFilter(num_entries_power, bits_per_entry);
@@ -327,7 +328,10 @@ public class Experiment1 extends ExperimentsBase {
 	
 	static public void scalability_experiment(Filter qf, long initial_key, long end_key, baseline results) {
 		//输入四个变量
-		//Filter qf
+		//Filter qf 一个类型为 Filter 的对象
+		//long initial_key 初始插入key (即插入元素)
+		//long end_key
+		//baseline result
 
 		int num_qeuries = 1000000; //查询次数
 		int query_index = Integer.MAX_VALUE; // int 类型能够表示的最大值。它的值是 2^31 - 1，即 2,147,483,647
@@ -336,8 +340,8 @@ public class Experiment1 extends ExperimentsBase {
 		//int num_entries_to_insert = (int) (Math.pow(2, power) * (qf.expansion_threshold )) - qf.num_existing_entries;
 		//final int initial_num_entries = qf.get_num_entries(true);
 		
-		long initial_num_entries = initial_key; 初始
-		long insertion_index = initial_key;
+		long initial_num_entries = initial_key;  //初始插入key赋值给 initial_num_entries why?
+		long insertion_index = initial_key; //初始插入key赋值给 insertion_index why?
 		long start_insertions = System.nanoTime();
 
 		
@@ -345,9 +349,11 @@ public class Experiment1 extends ExperimentsBase {
 
 		boolean successful_insert = false;
 		do {
-			successful_insert = qf.insert(insertion_index, false);
-			insertion_index++;
-		} while (insertion_index < end_key && successful_insert);
+			successful_insert = qf.insert(insertion_index, false);//调用Filter.insert(long input, boolean insert_only_if_no_match) 方法；
+			//注意这了不是调用对应filter的insert方法，因为对应filter的insert方法包含三个变量，而是调用父类Filter.insert();
+			// Filter 中的insert方法包含计算insertion_index的hash(包含指纹和slot)和插入filter过程 _insert() ,该方法是抽象方法，因不同的类不同
+			insertion_index++; // 插入的元素key++,也就是说，本实验的插入元素是选定一个开始的key,然后++得到的，直到插满（扩展）
+		} while (insertion_index < end_key && successful_insert);//当插入
 		
 		if (!successful_insert) {
 			System.out.println("an insertion failed");
