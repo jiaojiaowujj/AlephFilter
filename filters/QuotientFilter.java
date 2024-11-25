@@ -356,8 +356,8 @@ public class QuotientFilter extends Filter implements Cloneable {
 
 	// given a canonical slot A, finds the actual index B of where the run belonging to slot A now resides
 	// since the run might have been shifted to the right due to collisions
-	long find_run_start(long index) {
-		long current_index = index;
+	long find_run_start(long index) {// index 是slot的标号，从0开始
+		long current_index = index; 
 		int runs_to_skip_counter = 1;
 		while (is_shifted(current_index)) {
 			if (is_occupied(current_index)) {
