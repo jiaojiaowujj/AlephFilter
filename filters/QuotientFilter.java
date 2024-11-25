@@ -316,16 +316,16 @@ public class QuotientFilter extends Filter implements Cloneable {
 		//System.out.println("avg cluster length: \t" + avg_cluster_length);
 	}
 	
-	boolean is_occupied(long index) {
+	boolean is_occupied(long index) { //检查给定索引 index 是否被占用
 		return filter.get(index * bitPerEntry);
 	}
 	
-	boolean is_continuation(long index) {
+	boolean is_continuation(long index) { //检查给定索引 index 是否在一个run内
 		return filter.get(index * bitPerEntry + 1);
 	}
 	
 	boolean is_shifted(long index) {
-		return filter.get(index * bitPerEntry + 2);
+		return filter.get(index * bitPerEntry + 2); //检查给定索引 index 是否在一个cluster内
 	}
 	
 	void set_occupied(long index, boolean val) {
