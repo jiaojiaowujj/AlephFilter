@@ -225,23 +225,23 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 	}
 	
 	public boolean expand() {
-		if (is_full()) {//无效条目的数量大于0时，返回true,否则返回false
+		if (is_full()) {//检查是否需要扩展. 如果过滤器已满，返回false
 			return false;
 		}
-		int new_fingerprint_size = FingerprintGrowthStrategy.get_new_fingerprint_size(original_fingerprint_size, num_expansions, num_expansions_estimate, fprStyle);
+		int new_fingerprint_size = FingerprintGrowthStrategy.get_new_fingerprint_size(original_fingerprint_size, num_expansions, num_expansions_estimate, fprStyle); //计算新的指纹长度,使用 FingerprintGrowthStrategy 来确定扩展后的指纹长度
 		//System.out.println("FP size: " + new_fingerprint_size);
 		//new_fingerprint_size = Math.max(new_fingerprint_size, fingerprintLength);
 		
 		// we can't currently remove more than one bit at a time from a fingerprint during expansion
 		// This means we'd be losing bits from the mother hash and result in false negatives 
-		if (new_fingerprint_size < fingerprintLength) {
+		if (new_fingerprint_size < fingerprintLength) {//确保新的指纹长度不会小于当前长度，以避免数据丢失或产生错误
 			new_fingerprint_size = fingerprintLength - 1;
 		}
 	
 		
-		QuotientFilter new_qf = new QuotientFilter(power_of_two_size + 1, new_fingerprint_size + 3);
-		Iterator it = new Iterator(this);		
-		long unary_mask = prep_unary_mask(fingerprintLength, new_fingerprint_size);
+		QuotientFilter new_qf = new QuotientFilter(power_of_two_size + 1, new_fingerprint_size + 3); //构建新的 Quotient Filter
+		Iterator it = new Iterator(this); //使用迭代器逐个读取原过滤器的槽位和指纹信息,把旧的数据放入新Filter		
+		long unary_mask = prep_unary_mask(fingerprintLength, new_fingerprint_size); 调整指纹长度、槽位大小、过滤器内容以及相关统计信息
 		
 		long current_empty_fingerprint = empty_fingerprint;
 		set_empty_fingerprint(new_fingerprint_size);
