@@ -115,11 +115,11 @@ public class QuotientFilter extends Filter implements Cloneable {
 	
 	public boolean expand_autonomously() {
 		return expand_autonomously;
-	}
+	} //用于获取实例变量的值
 	
 	public void set_expand_autonomously(boolean val) {
 		expand_autonomously = val;
-	}
+	} // 设置是否自动扩展
 	
 	Bitmap make_filter(long init_size, int bits_per_entry) {
 		return new QuickBitVectorWrapper(bits_per_entry,  init_size + num_extension_slots);
@@ -146,8 +146,8 @@ public class QuotientFilter extends Filter implements Cloneable {
 	}
 	
 	public boolean expand() {
-		is_full = true;
-		return false;
+		is_full = true; // 已经达到了“满”
+		return false; // 表示扩展操作未成功?
 	}
 	
 	// measures the number of bits per entry for the filter 
@@ -736,10 +736,10 @@ public class QuotientFilter extends Filter implements Cloneable {
 	
 	protected boolean _insert(long large_hash, boolean insert_only_if_no_match) {
 		if (is_full) {
-			return false;
+			return false; //// 如果过滤器已经满了，则返回 false，停止插入！
 		}
-		long slot_index = get_slot_index(large_hash);
-		long fingerprint = gen_fingerprint(large_hash);
+		long slot_index = get_slot_index(large_hash);  // 根据 large_hash 获取插入的槽位索引
+		long fingerprint = gen_fingerprint(large_hash); // 根据 large_hash 生成指纹（哈希值）
 		
 		/*print_long_in_binary(large_hash, 64);
 		print_long_in_binary(slot_index, 32);
@@ -747,13 +747,14 @@ public class QuotientFilter extends Filter implements Cloneable {
 		System.out.println(slot_index + "  " + fingerprint );
 		System.out.println(); */
 		
-		boolean success = insert(fingerprint, slot_index, false);
+		boolean success = insert(fingerprint, slot_index, false); // 执行插入操作，尝试将指纹插入到槽位中
 		/*if (!success) {
 			System.out.println("insertion failure");
 			System.out.println(input + "\t" + slot_index + "\t" + get_fingerprint_str(fingerprint, fingerprintLength));
 			pretty_print();
 			System.exit(1);
 		}*/
+		// 如果设置了自动扩展，并且当前条目数已经达到扩展前的最大值，则执行扩展操作
 		if (expand_autonomously && num_physical_entries >= max_entries_before_full) {
 			boolean expanded = expand();
 			if (expanded) {
