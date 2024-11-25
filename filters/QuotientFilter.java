@@ -732,9 +732,9 @@ public class QuotientFilter extends Filter implements Cloneable {
 	public void set_expansion_threshold(double thresh) {
 		fullness_threshold = thresh;
 		max_entries_before_full = (long)(Math.pow(2, power_of_two_size) * fullness_threshold);
-	}
+	} //在哪里调用？
 	
-	protected boolean _insert(long large_hash, boolean insert_only_if_no_match) {
+	protected boolean _insert(long large_hash, boolean insert_only_if_no_match) { //和insert方法的区别？
 		if (is_full) {
 			return false; //// 如果过滤器已经满了，则返回 false，停止插入！
 		}
@@ -754,7 +754,7 @@ public class QuotientFilter extends Filter implements Cloneable {
 			pretty_print();
 			System.exit(1);
 		}*/
-		// 如果设置了自动扩展，并且当前条目数已经达到扩展前的最大值，则执行扩展操作
+		// 如果设置了自动扩展，并且当前条目数大于扩展前的最大值，则执行扩展操作。num_physical_entries？？max_entries_before_full？？
 		if (expand_autonomously && num_physical_entries >= max_entries_before_full) {
 			boolean expanded = expand();
 			if (expanded) {
