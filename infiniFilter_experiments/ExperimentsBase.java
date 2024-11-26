@@ -41,7 +41,7 @@ public class ExperimentsBase {
 
 	static int bits_per_entry = 16;
 	static int num_entries_power = 12;	
-	static int num_cycles = 27; // went up to 31
+	static int num_cycles = 27; // went up to 31  //作用是？
 
 	//将用户输入的字符串数组 String[] args 转化为int,并赋值到三个变量
 	static void parse_arguments(String[] args) {
