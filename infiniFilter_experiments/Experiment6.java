@@ -47,7 +47,7 @@ public class Experiment6 extends ExperimentsBase {
 	}*/
 	
 	static void warmup(Filter qf, int cycles) {
-		cycles = Math.max(cycles, 25);
+		cycles = Math.max(cycles, 25);//和Experiment 7不一样
 		baseline warmup_res = new baseline();
 		{
 			long starting_index = 0;
