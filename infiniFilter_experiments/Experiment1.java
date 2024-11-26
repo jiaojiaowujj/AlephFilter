@@ -44,7 +44,7 @@ public class Experiment1 extends ExperimentsBase {
 			scalability_experiment(qf, 0, qf.get_max_entries_before_expansion() - 1, new baseline()); 
 			//get_max_entries_before_expansion() 是QuotientFilter的方法，用于取到 max_entries_before_full=2^num_entries_power * fullness_threshold
 		}
-		{
+		{//为什么做两遍 QuotientFilter ？
 			QuotientFilter qf = new QuotientFilter(num_entries_power, bits_per_entry);
 			scalability_experiment(qf, 0, qf.get_max_entries_before_expansion() - 1, new baseline());
 		}
