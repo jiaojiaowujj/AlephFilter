@@ -201,7 +201,7 @@ public class DuplicatingChainedInfiniFilter extends ChainedInfiniFilter implemen
 	
 	public void resolve_pending_operations() {
 		for (Long canon_addr : deleted_new_entries) {
-			delete_tombstone_of_new_entry(canon_addr); // 删除新条目的墓碑
+			delete_tombstone_of_new_entry(canon_addr); // 删除新条目的tombstone
 		}
 		deleted_new_entries.clear(); // 清空新删除条目的集合
 		
@@ -214,7 +214,7 @@ public class DuplicatingChainedInfiniFilter extends ChainedInfiniFilter implemen
 		}
 	}
 	
-	public boolean expand() {
+	public boolean expand() {//包含三个方法
 		//System.out.println("expand");
 		//if (num_expansions == 10) {
 			//print_filter_summary();
@@ -229,7 +229,7 @@ public class DuplicatingChainedInfiniFilter extends ChainedInfiniFilter implemen
 		
 		resolve_pending_operations();
 		
-		boolean success = super.expand();	
+		boolean success = super.expand();//调用父类的expand()
 		/*if (secondary_IF != null) {
 			secondary_IF.pretty_print();
 			secondary_IF.expand();
