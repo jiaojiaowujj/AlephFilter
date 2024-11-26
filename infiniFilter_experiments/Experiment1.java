@@ -87,11 +87,13 @@ public class Experiment1 extends ExperimentsBase {
 		baseline original_qf_res = new baseline();
 		{
 			QuotientFilter orig = new QuotientFilter((num_entries_power + num_cycles) / 2, bits_per_entry);
+			// 参数 (num_entries_power + num_cycles) / 2 传入QuotientFilter() 方法的第一个变量 power_of_two，也就是说创建一个更大的QuotientFilter
 			orig.set_expand_autonomously(false); 
+			// 设置 expand_autonomously = false
 			long starting_index = 0;
-			for (int i = num_entries_power; i < (num_entries_power + num_cycles) / 2 + 1; i++ ) {
+			for (int i = num_entries_power; i < (num_entries_power + num_cycles) / 2 + 1; i++ ) { //为什么遍历(num_entries_power + num_cycles) / 2 + 1？？
 				long end_key = (int)(Math.pow(2, i) * 0.90); // 
-				scalability_experiment(orig, starting_index, end_key, original_qf_res);
+				scalability_experiment(orig, starting_index, end_key, original_qf_res);//0->
 				starting_index = end_key;
 				System.out.println("static quotient filter " + i);
 			}
