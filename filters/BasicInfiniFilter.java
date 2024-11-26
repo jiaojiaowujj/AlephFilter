@@ -28,6 +28,8 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 	protected long empty_fingerprint;
 	int num_void_entries = 0;
 	FingerprintGrowthStrategy.FalsePositiveRateExpansion fprStyle = FingerprintGrowthStrategy.FalsePositiveRateExpansion.UNIFORM;
+	//定义了扩展后假阳性率变化的风格，此处为uniform, 即new_filter_FPR = original_FPR
+	
 	int num_distinct_void_entries = 0;
 	int num_expansions_estimate = -1;
 	
@@ -225,10 +227,21 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 	}
 	
 	public boolean expand() {
-		if (is_full()) {//检查是否需要扩展. 如果过滤器已满，返回false
+		if (is_full()) {
+			//检查 is_full() 返回true(即 num_void_entries>0)；则if返回false
+			//检查 is_full() 返回false(即 num_void_entries 等于0)；则不执行if
 			return false;
 		}
-		int new_fingerprint_size = FingerprintGrowthStrategy.get_new_fingerprint_size(original_fingerprint_size, num_expansions, num_expansions_estimate, fprStyle); //计算新的指纹长度,使用 FingerprintGrowthStrategy 来确定扩展后的指纹长度
+		//此时num_void_entries=0
+		
+		int new_fingerprint_size = FingerprintGrowthStrategy.get_new_fingerprint_size(original_fingerprint_size, num_expansions, num_expansions_estimate, fprStyle); 
+		//计算新的指纹长度,使用 FingerprintGrowthStrategy 来确定扩展后的指纹长度
+		//original_fingerprint_size 是 QuotientFilter中定义的成员变量，因此 BasicInfiniFilter.java 继承了下来，直接调用. original_fingerprint_size = fingerprintLength=bits_per_entry - 3;
+		//QuotientFilter()中定义的num_expansions = 0;
+		//本类中定义的成员变量 int num_expansions_estimate = -1;
+		
+
+		
 		//System.out.println("FP size: " + new_fingerprint_size);
 		//new_fingerprint_size = Math.max(new_fingerprint_size, fingerprintLength);
 		
