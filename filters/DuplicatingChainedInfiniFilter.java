@@ -229,7 +229,7 @@ public class DuplicatingChainedInfiniFilter extends ChainedInfiniFilter implemen
 		
 		resolve_pending_operations();
 		
-		boolean success = super.expand();//调用父类的expand()
+		boolean success = super.expand();//调用父类ChainedInfiniFilter的expand()方法
 		/*if (secondary_IF != null) {
 			secondary_IF.pretty_print();
 			secondary_IF.expand();
