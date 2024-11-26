@@ -42,22 +42,24 @@ public class ExperimentsBase {
 	static int bits_per_entry = 16;
 	static int num_entries_power = 12;	
 	static int num_cycles = 27; // went up to 31
-	
+
+	//将用户输入的字符串数组 String[] args 转化为int,并赋值到三个变量
 	static void parse_arguments(String[] args) {
 		if (args != null) {
 	        ArrayList<Integer> argsArr = new ArrayList<Integer>(args.length); // could be 9
-	        for (String val : args) {
-	            int temp = Integer.parseInt(val);
-	            argsArr.add(temp);
+		//创建一个整数数组 argsArr,存储解析后的整数值
+	        for (String val : args) {//循环遍历 args 数组中的每个字符串元素
+	            int temp = Integer.parseInt(val);//将其转换为整数
+	            argsArr.add(temp);//将其加入 argsArr 列表
 	        }   
 	        if (argsArr.size() > 0 && argsArr.get(0) > 0) {
-	        	bits_per_entry = argsArr.get(0);
+	        	bits_per_entry = argsArr.get(0);//如果 argsArr 中至少有 1 个元素且第一个元素大于 0，则将其值赋给 bits_per_entry
 	        }
 	        if (argsArr.size() > 1 && argsArr.get(1) > 0) {
-	        	num_entries_power = argsArr.get(1);
+	        	num_entries_power = argsArr.get(1);//如果 argsArr 中至少有 2 个元素且第二个元素大于 0，则将其值赋给 num_entries_power
 	        }
 	        if (argsArr.size() > 2 && argsArr.get(2) > 0) {
-	        	num_cycles = argsArr.get(2);
+	        	num_cycles = argsArr.get(2);//如果 argsArr 中至少有 3 个元素且第三个元素大于 0，则将其值赋给 num_cycles
 	        }
 		}
 	}
