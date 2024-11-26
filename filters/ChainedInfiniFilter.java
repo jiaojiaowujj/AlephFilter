@@ -57,8 +57,9 @@ import filters.FingerprintGrowthStrategy.FalsePositiveRateExpansion;
 
 public class ChainedInfiniFilter extends BasicInfiniFilter implements Cloneable {
 
-	ArrayList<BasicInfiniFilter> chain;
-	BasicInfiniFilter secondary_IF = null;
+	ArrayList<BasicInfiniFilter> chain; //定义了动态数组（ArrayList），命名为chain，存储多个 BasicInfiniFilter 实例的集合
+	BasicInfiniFilter secondary_IF = null; //定义了一个 BasicInfiniFilter 类型的变量 secondary_IF，并初始化为 null
+	
 	//int count_until_replacing_former = 0;
 	//int count_until_expanding_former = 0;
 	//int former_phase = 0;
@@ -256,6 +257,7 @@ public class ChainedInfiniFilter extends BasicInfiniFilter implements Cloneable 
 		// creating secondary IF for the first time 
 		
 		if (secondary_IF == null && num_void_entries > 0) { // first time we create a former filter
+			//本类 ChainedInfiniFilter 中定义BasicInfiniFilter secondary_IF = null; 即定义了一个BasicInfiniFilter类型的对象 secondary_IF，赋值为空null
 			int power = (int) Math.ceil( Math.log(num_void_entries) / Math.log(2) );
 			int FP_size = power_of_two_size - power + 1; 
 			create_secondary(power, FP_size);
