@@ -197,7 +197,7 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 		insertee.insert(empty_fingerprint, bucket2, false);*/
 	}
 	
-	private static int prep_unary_mask(int prev_FP_size, int new_FP_size) {
+	private static int prep_unary_mask(int prev_FP_size, int new_FP_size) {//产生一个新指纹长度的1000...0，也就说生成 unary counter,当扩展一次，把第一个比特设为1
 		int fingerprint_diff = new_FP_size - prev_FP_size;
 		
 		int unary_mask = 0;
@@ -267,7 +267,7 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 		long unary_mask = prep_unary_mask(fingerprintLength, new_fingerprint_size); 
 		//fingerprintLength 是当前指纹长度
 		//new_fingerprint_size新指纹长度
-		//本类中定义的方法，作用：
+		//本类中定义的方法，作用：产生一个新指纹长度的1000...0，也就说生成 unary counter,把第一个比特设为1
 		
 		long current_empty_fingerprint = empty_fingerprint;
 		set_empty_fingerprint(new_fingerprint_size);
