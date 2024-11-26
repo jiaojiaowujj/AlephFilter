@@ -219,7 +219,7 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 	}
 
 	
-	void report_void_entry_creation(long slot) {
+	void report_void_entry_creation(long slot) {//是否输入slot有什么影响？
 		num_distinct_void_entries++;
 		num_void_entries++;
 	}
@@ -241,7 +241,7 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 		
 		QuotientFilter new_qf = new QuotientFilter(power_of_two_size + 1, new_fingerprint_size + 3); //构建新的 Quotient Filter
 		Iterator it = new Iterator(this); //使用迭代器逐个读取原过滤器的槽位和指纹信息,把旧的数据放入新Filter		
-		long unary_mask = prep_unary_mask(fingerprintLength, new_fingerprint_size); 调整指纹长度、槽位大小、过滤器内容以及相关统计信息
+		long unary_mask = prep_unary_mask(fingerprintLength, new_fingerprint_size); //调整指纹长度、槽位大小、过滤器内容以及相关统计信息
 		
 		long current_empty_fingerprint = empty_fingerprint;
 		set_empty_fingerprint(new_fingerprint_size);
@@ -262,7 +262,7 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 				
 				//print_long_in_binary(updated_fingerprint, 32);
 				if (updated_fingerprint == empty_fingerprint) {
-					report_void_entry_creation(updated_bucket);
+					report_void_entry_creation(updated_bucket); //num_distinct_void_entries++; num_void_entries++;
 				}
 				
 				
