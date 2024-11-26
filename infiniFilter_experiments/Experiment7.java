@@ -37,7 +37,8 @@ public class Experiment7 extends ExperimentsBase {
 	public static boolean condition_to_start_deleting(ChainedInfiniFilter qf) {
 		return !qf.is_chain_empty();
 	}
-	
+
+	//warmup??
 	static void warmup(Filter qf, int cycles) {
 		baseline warmup_res = new baseline();
 		{
@@ -62,9 +63,9 @@ public class Experiment7 extends ExperimentsBase {
 	public static void main(String[] args) {
 		parse_arguments(args);
 		
-		ExperimentsBase.bits_per_entry = 12; 
-		num_entries_power = 9; 
-		num_cycles = 29; 
+		ExperimentsBase.bits_per_entry = 12; //参数不同
+		num_entries_power = 9; //参数不同
+		num_cycles = 29; //参数不同
 		FalsePositiveRateExpansion fpr_style = FalsePositiveRateExpansion.UNIFORM;
 		boolean perform_deletes = false;
 		int num_generations_to_delete = 2;
@@ -75,9 +76,10 @@ public class Experiment7 extends ExperimentsBase {
 		
 		if (do_warmup) {
 			Filter qf = new FingerprintSacrifice(num_entries_power, bits_per_entry);
-			warmup(qf, num_entries_power + bits_per_entry - 5);
+			warmup(qf, num_entries_power + bits_per_entry - 5); //参数不同 实验6中 -4
 		}
 		
+		//baseline1: fingerprint_sacrifice_res
 		baseline fingerprint_sacrifice_res = new baseline();
 		{
 			FingerprintSacrifice qf = new FingerprintSacrifice(num_entries_power, bits_per_entry);
@@ -115,7 +117,8 @@ public class Experiment7 extends ExperimentsBase {
 			qf.set_fpr_style(fpr_style);			
 			warmup(qf, num_cycles - 4);
 		}
-		
+
+		//baseline2: aleph_regular (fixed-width)
 		baseline aleph_regular = new baseline();
 		{
 			DuplicatingChainedInfiniFilter qf = new DuplicatingChainedInfiniFilter(num_entries_power, bits_per_entry, true, -1);
@@ -161,6 +164,7 @@ public class Experiment7 extends ExperimentsBase {
 			warmup(qf, num_cycles - 4);
 		}
 
+		//baseline3: ChainedInfiniFilter (fixed-width)
 		baseline infinifilter = new baseline();
 		{
 			ChainedInfiniFilter qf = new ChainedInfiniFilter(num_entries_power, bits_per_entry);
