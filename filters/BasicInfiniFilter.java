@@ -236,25 +236,38 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 		
 		int new_fingerprint_size = FingerprintGrowthStrategy.get_new_fingerprint_size(original_fingerprint_size, num_expansions, num_expansions_estimate, fprStyle); 
 		//计算新的指纹长度,使用 FingerprintGrowthStrategy 来确定扩展后的指纹长度
-		//original_fingerprint_size 是 QuotientFilter中定义的成员变量，因此 BasicInfiniFilter.java 继承了下来，直接调用. original_fingerprint_size = fingerprintLength=bits_per_entry - 3;
+		//original_fingerprint_size 是 QuotientFilter中定义的成员变量，原始指纹长度，因此 BasicInfiniFilter.java 继承了下来，直接调用. original_fingerprint_size = fingerprintLength=bits_per_entry - 3;
 		//QuotientFilter()中定义的num_expansions = 0;
 		//本类中定义的成员变量 int num_expansions_estimate = -1;
-		
-
+		//fprStyle=UNIFORM 即 new_filter_FPR = original_FPR = 2^-original_fingerprint_size
+		//new_fingerprint_size=Math.ceil( Math.log(1.0 / new_filter_FPR) / Math.log(2) ); 
+			//解析：1.0 / new_filter_FPR 将假阳性率转换为一个反比值。如果假阳性率 FPR = 0.01，则 1.0 / FPR = 100
+			//对反比值取对数 log (底数默认为e)
+			//转化底数为2的对数，例如log_2 100 = 6.64
+			//向上取整 log_2 100 = 7
+		//因为fprStyle=UNIFORM，假阳性率不变，因此新的指纹长度也不变
 		
 		//System.out.println("FP size: " + new_fingerprint_size);
 		//new_fingerprint_size = Math.max(new_fingerprint_size, fingerprintLength);
 		
 		// we can't currently remove more than one bit at a time from a fingerprint during expansion
 		// This means we'd be losing bits from the mother hash and result in false negatives 
-		if (new_fingerprint_size < fingerprintLength) {//确保新的指纹长度不会小于当前长度，以避免数据丢失或产生错误
+		if (new_fingerprint_size < fingerprintLength) {//确保新的指纹长度不会小于当前长度，以避免数据丢失或产生错误；如果小，也仅设置为减去一个比特
 			new_fingerprint_size = fingerprintLength - 1;
 		}
 	
 		
-		QuotientFilter new_qf = new QuotientFilter(power_of_two_size + 1, new_fingerprint_size + 3); //构建新的 Quotient Filter
-		Iterator it = new Iterator(this); //使用迭代器逐个读取原过滤器的槽位和指纹信息,把旧的数据放入新Filter		
-		long unary_mask = prep_unary_mask(fingerprintLength, new_fingerprint_size); //调整指纹长度、槽位大小、过滤器内容以及相关统计信息
+		QuotientFilter new_qf = new QuotientFilter(power_of_two_size + 1, new_fingerprint_size + 3); //构建新的 Quotient Filter，Filter长度扩展为原来的两倍，条目长度用新指纹+3
+		Iterator it = new Iterator(this); //使用迭代器逐个读取原过滤器的槽位和指纹信息,把旧的数据放入新Filter	
+		//this 就是 new_qf
+		//下面这两句话的逻辑没弄清楚
+		// 这里的 this 位于 BasicInfiniFilter 类或其子类中的某个方法里，this 就是当前 BasicInfiniFilter 类或其子类的对象引用
+		// 因为定义 Iterator(QuotientFilter new_qf)， BasicInfiniFilter是QuotientFilter的子类
+		
+		long unary_mask = prep_unary_mask(fingerprintLength, new_fingerprint_size); 
+		//fingerprintLength 是当前指纹长度
+		//new_fingerprint_size新指纹长度
+		//本类中定义的方法，作用：
 		
 		long current_empty_fingerprint = empty_fingerprint;
 		set_empty_fingerprint(new_fingerprint_size);
