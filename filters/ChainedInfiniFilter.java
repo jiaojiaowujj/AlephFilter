@@ -257,9 +257,9 @@ public class ChainedInfiniFilter extends BasicInfiniFilter implements Cloneable 
 		// creating secondary IF for the first time 
 		
 		if (secondary_IF == null && num_void_entries > 0) { // first time we create a former filter
-			//本类 ChainedInfiniFilter 中定义BasicInfiniFilter secondary_IF = null; 即定义了一个BasicInfiniFilter类型的对象 secondary_IF，赋值为空null
-			int power = (int) Math.ceil( Math.log(num_void_entries) / Math.log(2) );
-			int FP_size = power_of_two_size - power + 1; 
+			//本类 ChainedInfiniFilter 中定义BasicInfiniFilter secondary_IF = null; 即定义了一个BasicInfiniFilter类型的引用变量 secondary_IF，赋值为空null
+			int power = (int) Math.ceil( Math.log(num_void_entries) / Math.log(2) );//num_void_entries 的以 2 为底的对数,并向上取整（即，计算num_void_entries需要几个比特）
+			int FP_size = power_of_two_size - power + 1; //??
 			create_secondary(power, FP_size);
 		}
 		// the secondary infinifilter is full, so we add it to the chain
