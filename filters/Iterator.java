@@ -58,7 +58,8 @@ public class Iterator  {
 		boolean shifted = (slot & 4) != 0;//和100按位与操作，得到slot上的倒数第三位，即shifted位的比特
 		
 		
-		while (!occupied && !continuation && !shifted && index < qf.get_logical_num_slots_plus_extensions()) {
+		while (!occupied && !continuation && !shifted && index < qf.get_logical_num_slots_plus_extensions()) {//三个flag比特为0,即为空槽；并且index没有超过filter长度
+			////从slot 0开始检查旧的slot是否为空，直到遇到一个非空slot跳出while
 			index++;
 			if (index == qf.get_logical_num_slots_plus_extensions()) {
 				return false;
@@ -69,22 +70,22 @@ public class Iterator  {
 			shifted = (slot & 4) != 0;
 		} 
 
-		if (occupied && !continuation && !shifted) {
+		if (occupied && !continuation && !shifted) {//occupied = true && continuation=false && shifted=false 即三个比特为：100
 			s.clear();
 			s.add(index);
 			bucket_index = index;
 		}
-		else if (occupied && continuation && shifted) {
+		else if (occupied && continuation && shifted) {//occupied = true && continuation=true && shifted=true 即三个比特为：111
 			s.add(index);
 		}
-		else if (!occupied && !continuation && shifted) {
+		else if (!occupied && !continuation && shifted) {//occupied = false && continuation=false && shifted=true 即三个比特为：001
 			s.remove();
 			bucket_index = s.peek();
 		}
-		else if (!occupied && continuation && shifted) {
+		else if (!occupied && continuation && shifted) {//occupied = false && continuation=true && shifted=true 即三个比特为：011
 			// do nothing
 		}
-		else if (occupied && !continuation && shifted) {
+		else if (occupied && !continuation && shifted) {//occupied = true && continuation=false && shifted=true 即三个比特为：101
 			s.add(index);
 			s.remove(); 
 			bucket_index = s.peek();
