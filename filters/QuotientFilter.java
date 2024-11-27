@@ -319,7 +319,7 @@ public class QuotientFilter extends Filter implements Cloneable {
 		//System.out.println("avg cluster length: \t" + avg_cluster_length);
 	}
 	
-	boolean is_occupied(long index) { //检查给定索引 index 是否被占用
+	boolean is_occupied(long index) { //检查给定索引 index (slot) 是否被占用，返回is_occupied对应的结果，true或false
 		return filter.get(index * bitPerEntry);
 	}
 	
@@ -332,7 +332,7 @@ public class QuotientFilter extends Filter implements Cloneable {
 	}
 	
 	void set_occupied(long index, boolean val) {
-		filter.set(index * bitPerEntry, val);
+		filter.set(index * bitPerEntry, val);//调用QuickBitVectorWrapper.java中set(),
 	}
 	
 	void set_continuation(long index, boolean val) {
