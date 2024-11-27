@@ -52,10 +52,10 @@ public class Iterator  {
 			return false;
 		}	
 		
-		long slot = qf.get_slot(index);
-		boolean occupied = (slot & 1) != 0;
-		boolean continuation = (slot & 2) != 0;
-		boolean shifted = (slot & 4) != 0;
+		long slot = qf.get_slot(index); //return an entire slot representation, including metadata flags and fingerprint
+		boolean occupied = (slot & 1) != 0; //和1按位与操作，得到slot上的最后一位，即occupied位的比特
+		boolean continuation = (slot & 2) != 0;//和10按位与操作，得到slot上的倒数第二位，即continuation位的比特
+		boolean shifted = (slot & 4) != 0;//和100按位与操作，得到slot上的倒数第三位，即shifted位的比特
 		
 		
 		while (!occupied && !continuation && !shifted && index < qf.get_logical_num_slots_plus_extensions()) {
