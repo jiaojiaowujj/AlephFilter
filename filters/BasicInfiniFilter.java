@@ -221,7 +221,7 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 	}
 
 	
-	void report_void_entry_creation(long slot) {//是否输入slot有什么影响？
+	void report_void_entry_creation(long slot) {//输入slot有什么作用？
 		num_distinct_void_entries++;
 		num_void_entries++;
 	}
@@ -260,9 +260,8 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 		QuotientFilter new_qf = new QuotientFilter(power_of_two_size + 1, new_fingerprint_size + 3); //构建新的 Quotient Filter，Filter长度扩展为原来的两倍，条目长度用新指纹+3
 		Iterator it = new Iterator(this); //使用迭代器逐个读取原过滤器的槽位和指纹信息,把旧的数据放入新Filter	
 		//this 就是 new_qf
-		//下面这两句话的逻辑没弄清楚
-		// 这里的 this 位于 BasicInfiniFilter 类或其子类中的某个方法里，this 就是当前 BasicInfiniFilter 类或其子类的对象引用
-		// 因为定义 Iterator(QuotientFilter new_qf)， BasicInfiniFilter是QuotientFilter的子类
+		
+
 		
 		long unary_mask = prep_unary_mask(fingerprintLength, new_fingerprint_size); 
 		//fingerprintLength 是当前指纹长度
