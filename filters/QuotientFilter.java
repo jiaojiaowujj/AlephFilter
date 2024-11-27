@@ -83,7 +83,7 @@ public class QuotientFilter extends Filter implements Cloneable {
 		num_expansions = 0; //扩展次数，初始为 0
 		hash_type = HashType.xxh; //设置哈希类型为 HashType.xxh
 		
-		last_empty_slot = init_size + num_extension_slots - 1; //计算最后一个空槽的位置，考虑初始大小和扩展槽
+		last_empty_slot = init_size + num_extension_slots - 1; //计算出最后一个空槽的位置，利用初始大小和扩展槽计算
 		last_cluster_start = 0; //初始设置为 0，可能用于标记cluster的起点
 		backward_steps = 0;
 		//measure_num_bits_per_entry();
