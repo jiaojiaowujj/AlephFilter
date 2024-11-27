@@ -54,7 +54,7 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 	void set_empty_fingerprint(long fp_length) {
 		empty_fingerprint = (1L << fp_length) - 2L;
 	}
-	//定义了一个名为 set_empty_fingerprint 的方法，主要作用是为过滤器设置“空槽位”的指纹值
+	//作用是为过滤器设置“空槽位”的指纹值
 	//参数 fp_length 指纹长度
 	//计算并设置一个特殊的指纹值，用来标记过滤器中的“空槽”, 生成的指纹值接近但小于2^fp_length
 	//如果 fp_length = 4：(1L << 4) - 2L = 16 - 2 = 14（二进制为 1110）
@@ -272,13 +272,14 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 		//new_fingerprint_size新指纹长度
 		//本类中定义的方法，作用：产生一个新指纹长度的比特串 1000...0，也就说生成 unary counter,把第一个比特设为1
 		
-		long current_empty_fingerprint = empty_fingerprint;
-		set_empty_fingerprint(new_fingerprint_size);
+		long current_empty_fingerprint = empty_fingerprint; 
+		//current_empty_fingerprint 存储了扩展之前，也就是当前的空指纹
+		set_empty_fingerprint(new_fingerprint_size);//重新生成新的指纹长度下的空指纹
 		//print_long_in_binary(current_empty_fingerprint, 32);
 		//print_long_in_binary(empty_fingerprint, 32);
 		//num_void_entries = 0;
 		
-		while (it.next()) {
+		while (it.next()) {//
 			long bucket = it.bucket_index;
 			long fingerprint = it.fingerprint;
 			if (it.fingerprint != current_empty_fingerprint) {
