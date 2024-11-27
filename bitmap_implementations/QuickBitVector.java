@@ -51,7 +51,10 @@ protected QuickBitVector() {
  * @return the bit mask having all bits between <tt>from</tt> and <tt>to</tt> set to 1.
  */
 public static final long bitMaskWithBitsSetFromTo(long from, long to) {
-	return pows[(int)(to-from+1)] << from;
+	return pows[(int)(to-from+1)] << from; 
+	// to - from + 1 是需要设置的位数。例如，如果 from = 3，to = 5，则位数为 3
+	// pows 生成对应长度的掩码，例如pows[3] = 111
+	// 左移：0b111 << 3 = 111000
 
 	// This turned out to be slower:
 	// 0xffffffffffffffffL == ~0L == -1L == all 64 bits set.
@@ -91,10 +94,14 @@ public static boolean get(long[] bits, long bitIndex) {
  * @return the specified bits as long value.
  */
 public static long getLongFromTo(long[] bits, long from, long to) {
-	if (from>to) return 0L;
-	
+	//从一个 long 数组（bits）中提取指定范围（从 from 到 to）的位，并将这些位组合成一个 long 值
+	if (from>to) return 0L;//如果 from > to，说明输入范围无效，直接返回 0。
+
+	//计算开始和结束在哪一个 long 数组元素
 	final int fromIndex = (int)(from >> ADDRESS_BITS_PER_UNIT); //equivalent to from/64
 	final int toIndex = (int)(to >> ADDRESS_BITS_PER_UNIT);
+	
+	//计算起始和结束位在对应 long 数组元素中的偏移量
 	final int fromOffset = (int)(from & BIT_INDEX_MASK); //equivalent to from%64
 	final int toOffset = (int)(to & BIT_INDEX_MASK);
 	//this is equivalent to the above, but slower:
@@ -106,22 +113,26 @@ public static long getLongFromTo(long[] bits, long from, long to) {
 
 	long mask;
 	if (fromIndex==toIndex) { //range does not cross unit boundaries; value to retrieve is contained in one single long value.
-		mask=bitMaskWithBitsSetFromTo(fromOffset, toOffset);
-		return (bits[fromIndex]	& mask) >>> fromOffset;
+		//如果 fromIndex == toIndex，表示所需位数都在同一个 long 元素中
+		mask=bitMaskWithBitsSetFromTo(fromOffset, toOffset);//创建一个掩码 mask，仅保留 [fromOffset, toOffset] 范围的位
+		return (bits[fromIndex]	& mask) >>> fromOffset;//用 bits[fromIndex] & mask 提取这些位;再右移 fromOffset 位对齐到最低位
 		
 	}
 
 	//range crosses unit boundaries; value to retrieve is spread over two long values.
 	//get part from first long value
-	mask=bitMaskWithBitsSetFromTo(fromOffset, BIT_INDEX_MASK);
-	final long x1=(bits[fromIndex] & mask) >>> fromOffset;
+	//如果 fromIndex != toIndex，表示所需位数跨越两个 long 元素
+	//从第一个 long 元素提取高位
+	mask=bitMaskWithBitsSetFromTo(fromOffset, BIT_INDEX_MASK); //创建掩码保留 [fromOffset, 63] 范围的位
+	final long x1=(bits[fromIndex] & mask) >>> fromOffset; //提取并右移 fromOffset 位
 	
 	//get part from second long value
-	mask=bitMaskWithBitsSetFromTo(0, toOffset);
-	final long x2=(bits[toIndex] & mask) << (BITS_PER_UNIT-fromOffset);
+	//从第二个 long 元素提取低位
+	mask=bitMaskWithBitsSetFromTo(0, toOffset); //创建掩码保留 [0, toOffset] 范围的位
+	final long x2=(bits[toIndex] & mask) << (BITS_PER_UNIT-fromOffset); //提取并左移到适当位置（64 - fromOffset）
 	
 	//combine
-	return x1|x2;
+	return x1|x2; //将两部分用按位或操作合并
 }
 /**
 Returns the index of the least significant bit in state "true".
