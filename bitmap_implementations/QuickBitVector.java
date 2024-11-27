@@ -115,7 +115,7 @@ public static long getLongFromTo(long[] bits, long from, long to) {
 	if (fromIndex==toIndex) { //range does not cross unit boundaries; value to retrieve is contained in one single long value.
 		//如果 fromIndex == toIndex，表示所需位数都在同一个 long 元素中
 		mask=bitMaskWithBitsSetFromTo(fromOffset, toOffset);//创建一个掩码 mask，仅保留 [fromOffset, toOffset] 范围的位
-		return (bits[fromIndex]	& mask) >>> fromOffset;//用 bits[fromIndex] & mask 提取这些位;再右移 fromOffset 位对齐到最低位
+		return (bits[fromIndex]	& mask) >>> fromOffset;//用 bits[fromIndex] & mask 提取这些位;再右移 fromOffset 位对齐到最低位？
 		
 	}
 
