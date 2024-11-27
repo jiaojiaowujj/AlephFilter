@@ -300,7 +300,7 @@ public static void putLongFromTo(long[] bits, long value, long from, long to) {
  * @param     bits   the bitvector.
  * @param     bitIndex   the index of the bit to be set.
  */
-public static void set(long[] bits, long bitIndex) {
+public static void set(long[] bits, long bitIndex) { //在位数组 (bits) 中的特定位置 bitIndex 处设置位为 1
 	bits[(int)(bitIndex >> ADDRESS_BITS_PER_UNIT)] |= 1L << (bitIndex & BIT_INDEX_MASK);           
 }
 /**
