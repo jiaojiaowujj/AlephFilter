@@ -477,7 +477,7 @@ public class QuotientFilter extends Filter implements Cloneable {
 		return index;
 	}
 	
-	boolean insert_new_run(long canonical_slot, long long_fp) {//把指纹插入到
+	boolean insert_new_run(long canonical_slot, long long_fp) {//把指纹插入到候选slot
 		long first_empty_slot = find_first_empty_slot(canonical_slot); // finds the first empty slot to the right of the canonical slot that is empty
 		long preexisting_run_start_index = find_run_start(canonical_slot); // scans the cluster leftwards and then to the right until reaching our run's would be location
 		long start_of_this_new_run = find_new_run_location(preexisting_run_start_index); // If there is already a run at the would-be location, find its end and insert the new run after it
@@ -542,9 +542,10 @@ public class QuotientFilter extends Filter implements Cloneable {
 		}
 		
 		long run_start_index = find_run_start(index);
+		//如果 is_occupied = false ，
 		//如果 is_occupied = true ，说明之前已经有数据也是属于这个run，但是该run真实的开始并不在候选的slot里，因此需要找到run的真实开始位置
 		//该算法就是找到该指纹所述run的真实开始位置
-		if (does_run_exist && insert_only_if_no_match) {
+		if (does_run_exist && insert_only_if_no_match) {//is_occupied = true
 			long found_index = find_first_fingerprint_in_run(run_start_index, long_fp);
 			if (found_index > -1) {
 				return false; 
