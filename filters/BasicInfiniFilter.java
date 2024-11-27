@@ -197,7 +197,7 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 		insertee.insert(empty_fingerprint, bucket2, false);*/
 	}
 	
-	private static int prep_unary_mask(int prev_FP_size, int new_FP_size) {//产生一个新指纹长度的1000...0，也就说生成 unary counter,当扩展一次，把第一个比特设为1
+	private static int prep_unary_mask(int prev_FP_size, int new_FP_size) {//产生一个新指纹长度的字符串 1000...0，也就说生成 unary counter,当扩展一次，把第一个比特设为1
 		int fingerprint_diff = new_FP_size - prev_FP_size;
 		
 		int unary_mask = 0;
@@ -260,13 +260,17 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 		QuotientFilter new_qf = new QuotientFilter(power_of_two_size + 1, new_fingerprint_size + 3); //构建新的 Quotient Filter，Filter长度扩展为原来的两倍，条目长度用新指纹+3
 		Iterator it = new Iterator(this); //使用迭代器逐个读取原过滤器的槽位和指纹信息,把旧的数据放入新Filter	
 		//this 就是 new_qf
-		
+		// 创建 new_qf 的迭代，初始如下参数
+		// 队列 s
+		// index = 0; 
+		// bucket_index = -1;		
+		// fingerprint = -1;
 
 		
 		long unary_mask = prep_unary_mask(fingerprintLength, new_fingerprint_size); 
 		//fingerprintLength 是当前指纹长度
 		//new_fingerprint_size新指纹长度
-		//本类中定义的方法，作用：产生一个新指纹长度的1000...0，也就说生成 unary counter,把第一个比特设为1
+		//本类中定义的方法，作用：产生一个新指纹长度的比特串 1000...0，也就说生成 unary counter,把第一个比特设为1
 		
 		long current_empty_fingerprint = empty_fingerprint;
 		set_empty_fingerprint(new_fingerprint_size);
