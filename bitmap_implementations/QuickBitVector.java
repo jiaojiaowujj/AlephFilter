@@ -84,9 +84,9 @@ public static boolean get(long[] bits, long bitIndex) {
 }
 /**
  * Returns a long value representing bits of a bitvector from index <tt>from</tt> to index <tt>to</tt>.
- * Bits are returned as a long value with the return value having bit 0 set to bit <code>from</code>, ..., bit <code>to-from</code> set to bit <code>to</code>.
- * All other bits of return value are set to 0.
- * If <tt>from > to</tt> then returns zero (<tt>0L</tt>). 提取的位按原序排列，其他所有位（即不在 from 和 to 范围内的位）将被设置为 0
+ * Bits are returned as a long value with the return value having bit 0 set to bit <code>from</code>, ..., bit <code>to-from</code> set to bit <code>to</code>. 第 from 位对齐到返回值的 bit 0,第 to 位对齐到返回值的 bit (to-from)
+ * All other bits of return value are set to 0.其他所有位（即不在 from 和 to 范围内的位）将被设置为 0
+ * If <tt>from > to</tt> then returns zero (<tt>0L</tt>). 
  * Precondition (not checked): <tt>to-from+1 <= 64</tt>. 返回的位数不能超过 64，因为返回值是 long 类型（占 64 位）
  * @param bits the bitvector.
  * @param from index of start bit (inclusive).
@@ -115,7 +115,7 @@ public static long getLongFromTo(long[] bits, long from, long to) {
 	if (fromIndex==toIndex) { //range does not cross unit boundaries; value to retrieve is contained in one single long value.
 		//如果 fromIndex == toIndex，表示所需位数都在同一个 long 元素中
 		mask=bitMaskWithBitsSetFromTo(fromOffset, toOffset);//创建一个掩码 mask，仅保留 [fromOffset, toOffset] 范围的位
-		return (bits[fromIndex]	& mask) >>> fromOffset;//用 bits[fromIndex] & mask 提取这些位;再右移 fromOffset 位对齐到最低位？
+		return (bits[fromIndex]	& mask) >>> fromOffset;//用 bits[fromIndex] & mask 提取这些位(000[被提取的比特位]0000，最左边的0的个数=fromOffset);再右移 fromOffset 位对齐到最低位？
 		
 	}
 
