@@ -343,7 +343,7 @@ public class QuotientFilter extends Filter implements Cloneable {
 		filter.set(index * bitPerEntry + 2, val);
 	}
 	
-	boolean is_slot_empty(long index) {
+	boolean is_slot_empty(long index) {//判断一个slot是否为空，如果该slot的三个比特均为0，则认为该slot为空，返回true,否则返回false（即三个比特存在任意一位为0）
 		return !is_occupied(index) && !is_continuation(index) && !is_shifted(index);
 	}
 	
