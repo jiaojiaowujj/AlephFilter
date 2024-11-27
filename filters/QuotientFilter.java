@@ -700,6 +700,7 @@ public class QuotientFilter extends Filter implements Cloneable {
 
 	
 	long get_slot_index(long large_hash) {
+		//从哈希值 (large_hash) 中提取对应的槽索引（slot_index）,即提取 large_hash 的最低 power_of_two_size 位，用于确定哈希表中的槽索引，例如：0100110001010 中1010（假设power_of_two_size=4）
 		long slot_index_mask = (1L << power_of_two_size) - 1;
 		long slot_index = large_hash & slot_index_mask;
 		//System.out.format("\n**get_slot_index(): [total_hash:index_hash:int_index] --> [%016x:%016x:%016x]\n", large_hash, (int)large_hash, slot_index);
@@ -707,6 +708,8 @@ public class QuotientFilter extends Filter implements Cloneable {
 	}
 	
 	long gen_fingerprint(long large_hash) {
+		//从哈希值 (large_hash) 中提取对应的指纹（fingerprint）,即提取 large_hash 的 fingerprintLength 位（除去slot_index的最低fingerprintLength的比特位）
+		//例如：0100110001010 中11000（假设fingerprintLength=5）
 		long fingerprint_mask = (1L << fingerprintLength) - 1L;
 		fingerprint_mask = fingerprint_mask << power_of_two_size;
 		long fingerprint = (large_hash & fingerprint_mask) >> power_of_two_size;
