@@ -332,7 +332,7 @@ public class QuotientFilter extends Filter implements Cloneable {
 	}
 	
 	void set_occupied(long index, boolean val) {
-		filter.set(index * bitPerEntry, val);//调用QuickBitVectorWrapper.java中set(),
+		filter.set(index * bitPerEntry, val);//调用QuickBitVectorWrapper.java中set(),把filter中index对应的slot
 	}
 	
 	void set_continuation(long index, boolean val) {
