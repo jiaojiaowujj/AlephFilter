@@ -86,15 +86,15 @@ public static boolean get(long[] bits, long bitIndex) {
  * Returns a long value representing bits of a bitvector from index <tt>from</tt> to index <tt>to</tt>.
  * Bits are returned as a long value with the return value having bit 0 set to bit <code>from</code>, ..., bit <code>to-from</code> set to bit <code>to</code>.
  * All other bits of return value are set to 0.
- * If <tt>from > to</tt> then returns zero (<tt>0L</tt>).
- * Precondition (not checked): <tt>to-from+1 <= 64</tt>.
+ * If <tt>from > to</tt> then returns zero (<tt>0L</tt>). 提取的位按原序排列，其他所有位（即不在 from 和 to 范围内的位）将被设置为 0
+ * Precondition (not checked): <tt>to-from+1 <= 64</tt>. 返回的位数不能超过 64，因为返回值是 long 类型（占 64 位）
  * @param bits the bitvector.
  * @param from index of start bit (inclusive).
  * @param to index of end bit (inclusive).
  * @return the specified bits as long value.
  */
 public static long getLongFromTo(long[] bits, long from, long to) {
-	//从一个 long 数组（bits）中提取指定范围（从 from 到 to）的位，并将这些位组合成一个 long 值
+	//从一个 long 数组（bits）中提取指定范围（从 from 到 to）的位，并将返回为一个 long 类型的值
 	if (from>to) return 0L;//如果 from > to，说明输入范围无效，直接返回 0。
 
 	//计算开始和结束在哪一个 long 数组元素
