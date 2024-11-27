@@ -54,7 +54,7 @@ public static final long bitMaskWithBitsSetFromTo(long from, long to) {
 	return pows[(int)(to-from+1)] << from; 
 	// to - from + 1 是需要设置的位数。例如，如果 from = 3，to = 5，则位数为 3
 	// pows 生成对应长度的掩码，例如pows[3] = 111
-	// 左移：0b111 << 3 = 111000
+	// 左移：0b111 << 3 = 111000 左移相当于移到高位
 
 	// This turned out to be slower:
 	// 0xffffffffffffffffL == ~0L == -1L == all 64 bits set.
