@@ -477,7 +477,7 @@ public class QuotientFilter extends Filter implements Cloneable {
 		return index;
 	}
 	
-	boolean insert_new_run(long canonical_slot, long long_fp) {
+	boolean insert_new_run(long canonical_slot, long long_fp) {//把指纹插入到
 		long first_empty_slot = find_first_empty_slot(canonical_slot); // finds the first empty slot to the right of the canonical slot that is empty
 		long preexisting_run_start_index = find_run_start(canonical_slot); // scans the cluster leftwards and then to the right until reaching our run's would be location
 		long start_of_this_new_run = find_new_run_location(preexisting_run_start_index); // If there is already a run at the would-be location, find its end and insert the new run after it
@@ -532,11 +532,11 @@ public class QuotientFilter extends Filter implements Cloneable {
 	}
 	
 	boolean insert(long long_fp, long index, boolean insert_only_if_no_match) {
-		if (index > last_empty_slot) {
+		if (index > last_empty_slot) {//判断插入的 index 是否超出了filter的最后一个slot的位置；如果超出，则插入失败。
 			return false;
 		}
-		boolean does_run_exist = is_occupied(index);
-		if (!does_run_exist) {
+		boolean does_run_exist = is_occupied(index);//取出 index 对应的 slot 中 is_occupied 是 true 还是 false
+		if (!does_run_exist) { //如果is_occupied=false（即该slot曾经没有作为候选slot，也就是说不是一个新的run的开始），
 			boolean val = insert_new_run(index, long_fp);
 			return val;
 		}
