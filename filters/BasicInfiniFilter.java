@@ -188,7 +188,7 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 		return updated_fingerprint;
 	}
 	
-	void handle_empty_fingerprint(long bucket_index, QuotientFilter insertee) {
+	void handle_empty_fingerprint(long bucket_index, QuotientFilter insertee) {//都注释掉了，等于啥也没干
 		//System.out.println("called");
 		/*long bucket1 = bucket_index;
 		long bucket_mask = 1L << power_of_two_size; 		// setting this bit to the proper offset of the slot address field
@@ -226,9 +226,9 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 		num_void_entries++;
 	}
 	
-	public boolean expand() {
+	public boolean expand() {//扩展qr为new_qr，将就的qr元素重新插入到新的new_qr
 		if (is_full()) {
-			//检查 is_full() 返回true(即 num_void_entries>0)；则if返回false
+			//检查 is_full() 返回true(即 num_void_entries>0)；则if返回false; num_void_entries>0意味着某个旧元素更新后的指纹恰巧等于“空指纹”？
 			//检查 is_full() 返回false(即 num_void_entries 等于0)；则不执行if
 			return false;
 		}
@@ -274,25 +274,25 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 		
 		long current_empty_fingerprint = empty_fingerprint; 
 		//current_empty_fingerprint 存储了扩展之前，也就是当前的空指纹
-		set_empty_fingerprint(new_fingerprint_size);//重新生成新的指纹长度下的空指纹
+		set_empty_fingerprint(new_fingerprint_size);//重新生成新的空指纹
 		//print_long_in_binary(current_empty_fingerprint, 32);
 		//print_long_in_binary(empty_fingerprint, 32);
 		//num_void_entries = 0;
 		
-		while (it.next()) {//
+		while (it.next()) {//遍历旧的qf,直到遍历完，取出每个slot的指纹和index
 			long bucket = it.bucket_index;
 			long fingerprint = it.fingerprint;
 			if (it.fingerprint != current_empty_fingerprint) {
 				long pivot_bit = (1 & fingerprint);	// getting the bit of the fingerprint we'll be sacrificing 
 				long bucket_mask = pivot_bit << power_of_two_size; // setting this bit to the proper offset of the slot address field
-				long updated_bucket = bucket | bucket_mask;	 // adding the pivot bit to the slot address field
-				long chopped_fingerprint = fingerprint >> 1; // getting rid of this pivot bit from the fingerprint 
-				long updated_fingerprint = chopped_fingerprint | unary_mask;				
-				new_qf.insert(updated_fingerprint, updated_bucket, false);
+				long updated_bucket = bucket | bucket_mask;	 // adding the pivot bit to the slot address field 扩展后的新位置
+				long chopped_fingerprint = fingerprint >> 1; // getting rid of this pivot bit from the fingerprint //扩展后的新指纹
+				long updated_fingerprint = chopped_fingerprint | unary_mask; //添加了1比特扩展位				
+				new_qf.insert(updated_fingerprint, updated_bucket, false); //放入新的qf
 				
 				//print_long_in_binary(updated_fingerprint, 32);
-				if (updated_fingerprint == empty_fingerprint) {
-					report_void_entry_creation(updated_bucket); //num_distinct_void_entries++; num_void_entries++;
+				if (updated_fingerprint == empty_fingerprint) { //某个旧元素更新后的指纹恰巧等于“空指纹”
+					report_void_entry_creation(updated_bucket); //num_distinct_void_entries++; num_void_entries++; 空指纹数量+1
 				}
 				
 				
@@ -317,7 +317,7 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 				System.out.println();*/
 			}
 			else {
-				handle_empty_fingerprint(it.bucket_index, new_qf);
+				handle_empty_fingerprint(it.bucket_index, new_qf);//该方法中没有具体操作，空的
 			}
 		}
 		//System.out.println("num_void_entries  " + num_void_entries);
@@ -333,7 +333,7 @@ public class BasicInfiniFilter extends QuotientFilter implements Cloneable {
 		last_empty_slot = new_qf.last_empty_slot;
 		last_cluster_start = new_qf.last_cluster_start;
 		backward_steps = new_qf.backward_steps;
-		if (num_void_entries > 0) {
+		if (num_void_entries > 0) {//没啥影响
 			//is_full = true;
 		}
 		return true;
