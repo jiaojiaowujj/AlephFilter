@@ -216,7 +216,7 @@ public class QuotientFilter extends Filter implements Cloneable {
 	}
 	
 	// returns the number of physical slots in the filter (including the extention/buffer slots at the end)
-	// 返回过滤器中物理槽的数量（包括末尾的扩展/缓冲槽）
+	// 返回过滤器中槽的数量（包括末尾的扩展/缓冲槽）
 	public long get_logical_num_slots_plus_extensions() {
 		return (1L << power_of_two_size) + num_extension_slots; //2^power_of_two_size + num_extension_slots
 	}
