@@ -48,7 +48,7 @@ public class Iterator  {
 
 	boolean next() {
 		
-		if (index == qf.get_logical_num_slots_plus_extensions()) {
+		if (index == qf.get_logical_num_slots_plus_extensions()) {//get_logical_num_slots_plus_extensions 过滤器中槽的数量（包括末尾的扩展/缓冲槽）
 			return false;
 		}	
 		
