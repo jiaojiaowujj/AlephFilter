@@ -536,12 +536,14 @@ public class QuotientFilter extends Filter implements Cloneable {
 			return false;
 		}
 		boolean does_run_exist = is_occupied(index);//取出 index 对应的 slot 中 is_occupied 是 true 还是 false
-		if (!does_run_exist) { //如果is_occupied=false（即该slot曾经没有作为候选slot，也就是说不是一个新的run的开始），
+		if (!does_run_exist) { //如果is_occupied=false（即该slot曾经没有作为候选slot，也就是说还没有开启一个新的run），那么就把指纹放在该slot
 			boolean val = insert_new_run(index, long_fp);
 			return val;
 		}
 		
 		long run_start_index = find_run_start(index);
+		//如果 is_occupied = true ，说明之前已经有数据也是属于这个run，但是该run真实的开始并不在候选的slot里，因此需要找到run的真实开始位置
+		//该算法就是找到该指纹所述run的真实开始位置
 		if (does_run_exist && insert_only_if_no_match) {
 			long found_index = find_first_fingerprint_in_run(run_start_index, long_fp);
 			if (found_index > -1) {
